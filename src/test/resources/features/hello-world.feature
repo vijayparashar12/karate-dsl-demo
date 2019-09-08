@@ -10,18 +10,6 @@ Feature: Demo basic usage of karate
     And match response.headers.Host == '#string'
 
   Scenario: Introduction of javascript and JSON as first class citizens
-    * def getRequest =
-    """
-    function(title, name) {
-      var randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
-      var uniqueId = randLetter + Date.now();
-      var person = {};
-      person['id'] = uniqueId;
-      person['title'] = title;
-      person['name'] = name;
-      return person
-    }
-    """
     Given url 'https://httpbin.org'
     And path 'post'
     And request getRequest('Mr.', 'Vijay')
