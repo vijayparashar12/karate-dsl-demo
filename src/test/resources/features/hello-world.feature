@@ -19,12 +19,15 @@ Feature: Demo basic usage of karate
 
   Scenario: Introduction of javascript and JSON as first class citizens
     * def id = uuid()
-    Given url httpBin
-    And path 'post'
-    And request getRequest(id,'Mr.', 'Vijay')
-    When method post
-    Then status 200
-    And match response.json.id == '#uuid'
+    * def payload = getRequest(id,'Mr.', 'Vijay')
+    * def postCall = call read('./post-request.feature') payload
+    * match postCall.response.json.id == '#uuid'
+
+  Scenario: read payload from fine
+    * def payload = read('../json/request.json')
+    * def postCall = call read('./post-request.feature') payload
+    * match postCall.response.json.id == '#number'
+    And match postCall.response.json == read('../json/request.json')
 
   Scenario: Showoff some more cool ways to call java
     * def dateStringToLong =
@@ -36,14 +39,3 @@ Feature: Demo basic usage of karate
       }
       """
     * assert dateStringToLong("2016-12-24T03:39:21.081+0000") == 1482550761081
-
-
-  Scenario: read payload from fine
-    * def id = uuid()
-    Given url httpBin
-    And path 'post'
-    And request read('../json/request.json')
-    When method post
-    Then status 200
-    And match response.json.id == '#number'
-    And match response.json == read('../json/request.json')
