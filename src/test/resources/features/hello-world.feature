@@ -1,7 +1,12 @@
 Feature: Demo basic usage of karate
 
   Background:
-  * def getRequest =  read("./functions/buildRequest.js")
+    * def uuid =
+    """
+    function(){ return java.util.UUID.randomUUID() + '' }
+    """
+
+    * def getRequest =  read("./functions/buildRequest.js")
 
   Scenario: make a get call to rest api and assert JSON Body
     Given url httpBin
@@ -13,8 +18,10 @@ Feature: Demo basic usage of karate
     And match response.headers.Host == '#string'
 
   Scenario: Introduction of javascript and JSON as first class citizens
+    * def id = uuid()
     Given url httpBin
     And path 'post'
-    And request getRequest('Mr.', 'Vijay')
+    And request getRequest(id,'Mr.', 'Vijay')
     When method post
     Then status 200
+    And match response.json.id == '#uuid'
