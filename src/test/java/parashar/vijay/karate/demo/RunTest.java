@@ -5,6 +5,6 @@ import com.intuit.karate.junit4.Karate;
 import org.junit.runner.RunWith;
 
 @RunWith(Karate.class)
-@KarateOptions(features = "classpath:features/hello-world.feature")
+@KarateOptions(features = {"classpath:features/hello-world.feature", "classpath:features/match.feature"})
 public class RunTest {
 }
